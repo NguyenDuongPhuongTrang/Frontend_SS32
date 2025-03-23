@@ -1,21 +1,39 @@
-let form =document.getElementById("myForm");
-let result = document.getElementById("result");
-let list = document.createElement("ol");
-result.appendChild(list);
+let dish = [
+    { name: 'Rau sạch', category: 'Đồ ăn' },
+    { name: 'Thịt lợn', category: 'Đồ ăn' },
+    { name: 'Pepsi không calo', category: 'Nước' },
+    { name: 'Cocacola', category: 'Nước' },
+    { name: 'Cờ lê', category: 'Dụng cụ' },
+    { name: 'Tuy vít', category: 'Dụng cụ' },
+];
 
-form.addEventListener ("submit", (e) => {
-    e.preventDefault();
-    let subject = document.getElementById('subject').value;
+const selectElement = document.querySelector('select');
+const button = document.querySelector('button');
+const optionDishElement = document.querySelectorAll('option');
+const listDish = document.querySelector('.listDish');
 
-    if (subject.trim() === "") {
-        alert('Tên môn học không được để trống!');
-    }
+function renderCategoryList() {
+    return [...new Set(dish.map(item => item.category))]
+        .map(category => `<option value="${category}">${category}</option>`)
+        .join('');
+}
 
-    let listItem = document.createElement("li");
-    listItem.textContent = subject;
-    list.appendChild(listItem);
-    document.getElementById('subject').value = "";
+selectElement.innerHTML = renderCategoryList();
+
+function renderList(dish){
+    return dish.map(item => `
+        <li>
+            <span><b>Tên đồ ăn</b>: ${item.name}</span>
+            <span>- <b>Danh mục</b>: ${item.category}</span>
+        </li>
+    `).join('');
+}
+
+listDish.innerHTML = renderList(dish);
+
+button.addEventListener('click', function(){
+    const filterDish = dish.filter(item => item.category === selectElement.value);
+    listDish.innerHTML = renderList(filterDish);
 })
-
 
 
